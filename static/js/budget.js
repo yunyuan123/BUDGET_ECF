@@ -13,8 +13,10 @@ const budgetInfo = document.querySelector('.income>span');
 const depensesEnBas = document.querySelector('.expense>span');
 const balanceEnBas = document.querySelector('.balance>span');
 
+const rightList = document.querySelector('.expenses-list');
 
-budgetInput.addEventListener('click',updateBudget);
+
+budgetInput.addEventListener('keyup',updateBudget);
 
 let totalDepense = 0;
 let totalBudget = 0;
@@ -27,6 +29,7 @@ let balance = 0;
 function updateBudget(){
     totalBudget = budgetInput.value
     budgetInfo.textContent = totalBudget 
+    console.log(totalBudget)
 }
 
 
@@ -35,9 +38,9 @@ addBtn.addEventListener('click', addItems);
 
 function addItems(){
     //createElement
-    const rightList = document.querySelector('.expenses-list');
+    
     const laSpan = document.createElement('span')
-    laSpan.textContent = depenseLabel + '' + depensePrix+ '€'
+    laSpan.textContent = depenseLabel.value + '' + depensePrix.value+ '€'
 
     const uneDiv = document.createElement('div');
     uneDiv.classList.add('expenses-item')
@@ -45,7 +48,7 @@ function addItems(){
     uneDiv.append(laSpan)
     rightList.prepend(uneDiv)
 
-    totalDepense += Number(depensePrix)
+    totalDepense += parseInt(depensePrix.value)
     updateExpense()
     updateBalance()
 }
@@ -67,18 +70,19 @@ function eraserAll(){
     totalDepense = 0
     updateExpense()
     totalBudget = 0
-    balanceEnBas = 0
+    balanceEnBas.textContent = 0
     updateBalance()
     flushItems()
 }
 
 // permet de delete tout la liste des dépenses située a droite
 function flushItems(){
-    let expensesItems = document.querySelectorAll('.expenses-item');
+    rightList.innerHTML = "";
+    // let expensesItems = document.querySelectorAll('.expenses-item');
 
-    for(let i=0; i < expensesItems.length; i++){
-        const intemEnCours = expensesItems[i];
-        intemEnCours.remove()
-    }
+    // for(let i=0; i < expensesItems.length; i++){
+    //     const intemEnCours = expensesItems[i];
+    //     intemEnCours.remove()
+    // }
 
 }
