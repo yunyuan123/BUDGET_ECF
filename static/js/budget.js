@@ -2,28 +2,83 @@ console.log('budget')
 
 // recuperer touts les elements HTML
 
-const budget = document.querySelector('#budget');
-const depense = document.querySelector('#depense');
-const montant = document.querySelector('#montant');
+const budgetInput = document.querySelector('#budget');
+const depenseLabel = document.querySelector('#depense');
+const depensePrix = document.querySelector('#montant');
 
 const addBtn = document.querySelector('.add-btn');
 const earserBtn = document.querySelector('.reset-btn');
 
-const totalBudget = document.querySelector('.income>span');
+const budgetInfo = document.querySelector('.income>span');
 const depensesEnBas = document.querySelector('.expense>span');
-const balance = document.querySelector('.balance>span');
+const balanceEnBas = document.querySelector('.balance>span');
 
-addBtn.addEventListener('click',addDepense);
+
+budgetInput.addEventListener('click',updateBudget);
 
 let totalDepense = 0;
+let totalBudget = 0;
+let balance = 0;
 
 
 
-function addDepense(){
-    budget.value = totalBudget
-    totalBudget.textContent = budget.value
-    depense.value.textContent = 
-    montant.value.textContent
 
-    
+// pour la valeur budget global dans le budget en bas 
+function updateBudget(){
+    totalBudget = budgetInput.value
+    budgetInfo.textContent = totalBudget 
+}
+
+
+//la fonction addItems ( pour ajouter les elements dans la liste des dépenses a droite avec leur montant )
+addBtn.addEventListener('click', addItems);
+
+function addItems(){
+    //createElement
+    const rightList = document.querySelector('.expenses-list');
+    const laSpan = document.createElement('span')
+    laSpan.textContent = depenseLabel + '' + depensePrix+ '€'
+
+    const uneDiv = document.createElement('div');
+    uneDiv.classList.add('expenses-item')
+
+    uneDiv.append(laSpan)
+    rightList.prepend(uneDiv)
+
+    totalDepense += Number(depensePrix)
+    updateExpense()
+    updateBalance()
+}
+// a chaque fois qu'une depense est ajouté, la dépense totale est mise a jour
+function updateExpense(){
+    depensesEnBas.textContent = totalDepense + '€'
+}
+console.log(depensesEnBas)
+//a chaque fois qu'une dépense est ajoutée, la balance total est mise a jour
+function updateBalance(){
+    balance = totalBudget - totalDepense
+    balanceEnBas.textContent = balance + '€';
+}
+
+// pour tout réinitialise a 0 
+earserBtn.addEventListener('click', eraserAll);
+
+function eraserAll(){
+    totalDepense = 0
+    updateExpense()
+    totalBudget = 0
+    balanceEnBas = 0
+    updateBalance()
+    flushItems()
+}
+
+// permet de delete tout la liste des dépenses située a droite
+function flushItems(){
+    let expensesItems = document.querySelectorAll('.expenses-item');
+
+    for(let i=0; i < expensesItems.length; i++){
+        const intemEnCours = expensesItems[i];
+        intemEnCours.remove()
+    }
+
 }
